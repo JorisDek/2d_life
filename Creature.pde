@@ -7,7 +7,9 @@ class Creature {
   float y;
   float min_temp;
   float max_temp;
+  float energy;
   int day_of_creation;
+  boolean displayStats = false;
   
   
   Creature(int dayOfCreation) {
@@ -19,15 +21,19 @@ class Creature {
     max_temp = random(-200, 200);
     min_temp = random(-200, max_temp - random(50));
     mutation_rate = 0.01;
+    energy = 7;
+    
   }
   
   void display() {
-    fill(color(64, 255, 8));
-    ellipse(x, y, 3, 3);
+    fill(color(255, 3, 3));
+    ellipse(x, y, 5, 5);
     textSize(14);
-    text("Creation day: "+ day_of_creation, x - 60, y + 20);
-    text("Min temp: "+ min_temp, x - 60, y + 35);
-    text("Max temp: "+ max_temp, x - 60, y + 50);
+    if(displayStats) {
+      text("Creation day: "+ day_of_creation, x - 60, y + 20);
+      text("Min temp: "+ min_temp, x - 60, y + 35);
+      text("Max temp: "+ max_temp, x - 60, y + 50);
+    }
   }
 
     // Perform action based on surroundings
@@ -90,5 +96,13 @@ class Creature {
   
   void incrementDayOfCreation() {
     day_of_creation++;
+  }
+  
+  void toggleStats() {
+    if(displayStats) {
+      displayStats = false;
+    } else {
+      displayStats = true;
+    }
   }
 }

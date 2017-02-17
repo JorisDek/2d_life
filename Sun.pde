@@ -10,8 +10,8 @@ class Sun {
     y = 20;
     width = height = 20;
     sun_color = color(240,240,3);
-    temp_increase = random(0.06);
-    temp_decrease = random(-0.06, 0);
+    temp_increase = random(0.03);
+    temp_decrease = random(-0.03, 0);
     
     //Water water = new Water();
   }
@@ -29,9 +29,17 @@ class Sun {
     return temp_increase;
   }
   
+  void setTempIncrease(float inc) {
+    temp_increase = inc;
+  }
+  
+  void setTempDecrease(float dec) {
+    temp_decrease = dec;
+  }
+  
   void resetTempIncreaseAndDecrease() {
-    temp_increase = random(0.06);
-    temp_decrease = random(-0.06, 0);
+    temp_increase = random(0.03);
+    temp_decrease = random(-0.03, 0);
   }
   
   int getX() {
@@ -45,63 +53,19 @@ class Sun {
       float waterTemp = water.getWaterTemp();
       water.setWaterTemp(waterTemp + temp_increase);
       
-      System.out.println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " rand: "+temp_increase+ " days: "+ w.getDays());
+      println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " rand: "+temp_increase+ " days: "+ w.getDays());
     } else if(x >= 1000 && x < 2000) {
       float waterTemp = water.getWaterTemp();
       water.setWaterTemp(waterTemp + temp_decrease);
-      System.out.println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " rand: "+temp_decrease+ " days: "+ w.getDays());
+      air.night();
+      println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " rand: "+temp_decrease+ " days: "+ w.getDays());
     }else if(x >= 2000) {
-      System.out.println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " days: "+ w.getDays());
+      println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " days: "+ w.getDays());
       x = 0;
       w.incrementDay();
+      air.day();
+      
       resetTempIncreaseAndDecrease();
-    }
-    
-    
-    //if(x >= 0 && x < 250) {
-    //  float temp_increase = random(0.008, 0.02);
-      
-    //  float waterTemp = water.getWaterTemp();
-    //  water.setWaterTemp(waterTemp + temp_increase);
-      
-    //  System.out.println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " rand: "+temp_increase+ " days: "+ w.getDays());
-    //} else if(x >= 250 && x < 500) {
-    //  float temp_increase = random(0.01, 0.06);
-      
-    //  float waterTemp = water.getWaterTemp();
-    //  water.setWaterTemp(waterTemp + temp_increase);
-      
-    //  this.setColor(245,240,3);
-    //  System.out.println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " rand: "+temp_increase+ " days: "+ w.getDays());
-    //} else if(x >= 500 && x < 750) {
-    //  float temp_increase = random(0.034, 0.08);
-      
-    //  float waterTemp = water.getWaterTemp();
-    //  water.setWaterTemp(waterTemp + temp_increase);
-      
-    //  this.setColor(255,101,5);
-    //  System.out.println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " rand: "+temp_increase+ " days: "+ w.getDays());
-    //} else if(x >= 750 && x < 1000) {
-    //  float temp_increase = random(-0.02, 0.04);
-      
-    //  float waterTemp = water.getWaterTemp();
-    //  water.setWaterTemp(waterTemp + temp_increase);
-      
-    //  this.setColor(245,240,3);
-    //  System.out.println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " rand: "+temp_increase+ " days: "+ w.getDays());
-    //} else if(x >= 1000 && x < 2000) {
-    //  float temp_increase = random(-0.06, 0);
-      
-    //  float waterTemp = water.getWaterTemp();
-    //  water.setWaterTemp(waterTemp + temp_increase);
-      
-    //  System.out.println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " rand: "+temp_increase+ " days: "+ w.getDays());
-    //} else if(x >= 2000) {
-    //  System.out.println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " days: "+ w.getDays());
-    //  x = 0;
-    //  w.incrementDay();
-    //}
-    
-    
+    }  
   }
 }

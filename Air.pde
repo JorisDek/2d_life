@@ -15,4 +15,10 @@ class Air {
   int getHeight() {
     return height;
   }
+  void day() {
+    air_color = color(2,215,250);
+  }
+  void night() {
+    air_color = color(1,32,93);
+  }
 }

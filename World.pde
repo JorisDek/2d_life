@@ -4,10 +4,12 @@
 class World {
   int days;
   float life_chance;
+  float food_chance;
   
   World() {
     days = 1;
     life_chance = 0.01;
+    food_chance = 0.1;
   }
 
   void incrementDay() {
@@ -35,5 +37,8 @@ class World {
   
   float getLifeChance() {
     return life_chance;
+  }
+  float getFoodChance() {
+    return food_chance;
   }
 }
