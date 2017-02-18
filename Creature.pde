@@ -8,7 +8,9 @@ class Creature {
   float min_temp;
   float max_temp;
   float energy;
+  float energy_drain;
   int day_of_creation;
+  int life_span;
   boolean displayStats = false;
   
   
@@ -22,7 +24,9 @@ class Creature {
     min_temp = random(-200, max_temp - random(50));
     mutation_rate = 0.01;
     energy = 7;
-    
+    life_span = int(random(25, 35));
+    energy = random(30, 50);
+    energy_drain = random(0.005);
   }
   
   void display() {
@@ -33,41 +37,19 @@ class Creature {
       text("Creation day: "+ day_of_creation, x - 60, y + 20);
       text("Min temp: "+ min_temp, x - 60, y + 35);
       text("Max temp: "+ max_temp, x - 60, y + 50);
+      text("Life span: "+ life_span, x - 60, y + 65);
+      text("Energy: "+ energy, x - 60, y + 80);
+      text("Energy drain: "+ energy_drain, x - 60, y + 95);
     }
   }
 
-    // Perform action based on surroundings
+  // Perform action based on surroundings
   void run() {
-    // Fix cell coordinates
-    //while(x < 0) {
-    //  x+=width;
-    //}
-    //while(x > width - 1) {
-    //  x-=width;
-    //}
-    //while(y < 0) {
-    //  y+=height;
-    //}
-    //while(y > height - 1) {
-    //  y-=height;
-    //}
-    
-    //// Cell instructions
-    //if (w.getpix(x + 1, y) == black) {
-    //  move(0, 1);
-    //} else if (w.getpix(x, y - 1) != black && w.getpix(x, y + 1) != black) {
-    //  move((int)random(9) - 4, (int)random(9) - 4);
-    //}
+
   }
   
-  // Will move the cell (dx, dy) units if that space is empty
-  void move(int dx, int dy) {
-    //if (w.getpix(x + dx, y + dy) == black) {
-    //  w.setpix(x + dx, y + dy, w.getpix(x, y));
-    //  w.setpix(x, y, color(0));
-    //  x += dx;
-    //  y += dy;
-    //}
+  void move() {
+    
   }
   
   float getMutationRate() {
@@ -104,5 +86,25 @@ class Creature {
     } else {
       displayStats = true;
     }
+  }
+  
+  int getLifeSpan() {
+    return life_span;
+  }
+  
+  void setLifeSpan(int lifespan) {
+    life_span = lifespan;
+  }
+  
+  float getEnergy() {
+    return energy;
+  }
+  
+  void setEnergy(float _energy) {
+    energy = _energy;
+  }
+  
+  void loseEnergy() {
+    energy = energy - energy_drain;
   }
 }

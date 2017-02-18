@@ -19,6 +19,6 @@ class Air {
     air_color = color(2,215,250);
   }
   void night() {
-    air_color = color(1,32,93);
+    air_color = color(1,10,75);
   }
 }

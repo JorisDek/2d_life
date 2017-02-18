@@ -69,70 +69,82 @@ void draw() {
     text("Day: "+w.getDays(), 10, 50);
     text("X: "+sun.getX(), 10, 65);
     text("Created Creatures: "+created_creatures, 10, 80);
-     text("Created Food: "+created_food, 10, 95);
+    text("Created Food: "+created_food, 10, 95);
     
     for(int f = 0; f < num_food; f++){
-      foods[f].be();
-      if(foods[f].getEnergy() < 0) {
-        foods[f] = null;
-        num_food--;
-      }
-      
-      foods[f].display();
-      
-      if( mouseX > foods[f].getX() && mouseX < foods[f].getX() + 3 && mouseY > foods[f].getY() && mouseY < foods[f].getY() + 3) {
-        if(mousePressed == true) {
-          foods[f].toggleStats();
+      if(foods[f] != null) {
+        foods[f].be();
+        foods[f].display();
+  
+        if( mouseX > foods[f].getX() && mouseX < foods[f].getX() + 3 && mouseY > foods[f].getY() && mouseY < foods[f].getY() + 3) {
+          if(mousePressed == true) {
+            foods[f].toggleStats();
+          }
+        }
+        if(foods[f] != foods[0]){
+          if(foods[f - 1] == null) {
+            foods[f - 1] = foods[f];
+            foods[f] = null;
+          }
+        }
+        if(foods[f] != null) {
+          if(foods[f].getEnergy() < 0){
+            foods[f] = null;
+            num_food--;
+          }
         }
       }
-      //if(foods[f] != foods[0]){
-      //  if(foods[f - 1] == null) {
-      //    foods[f - 1] = foods[f];
-      //    foods[f] = null;
-      //  }
-      //}
     }
     
     for(int c = 0; c < num_creatures; c++){
-      if(creatures[c].getMinTemp() < water.getTemp(creatures[c].getY()) && creatures[c].getMaxTemp() > water.getTemp(creatures[c].getY())) {
-        creatures[c].display();
-        
-        
-        
-        if( mouseX > creatures[c].getX() && mouseX < creatures[c].getX() + 5 && mouseY > creatures[c].getY() && mouseY < creatures[c].getY() + 5) {
-          if(mousePressed == true) {
-            creatures[c].toggleStats();
+      if(creatures[c].getLifeSpan() + creatures[c].getDayOfCreation() > w.getDays()) {           // als de creature niet te oud is
+        if(creatures[c].getEnergy() != 0) {                                                      // als de creature geen energie meer heeft
+          if(creatures[c].getMinTemp() < water.getTemp(creatures[c].getY()) && creatures[c].getMaxTemp() > water.getTemp(creatures[c].getY())) {    //als de creature in te warm of te koud water is
+            creatures[c].loseEnergy();
+            creatures[c].display();
+            
+            /* Na 100 dagen in leven
+            -- Stage 1 --
+            if energy > 200
+            kans om te zwemmen of kans op temp aanpassing aan de hand van average of betere/langere resitance
+            -- Stage 2 --
+            kans om temp te noticen
+            -- Stage 3 --
+            kans om te breeden
+            -- Stage 4 --
+            kans om aan te vallen
+            
+            ---- Stat increases -----
+            */
+            
+            if( mouseX > creatures[c].getX() && mouseX < creatures[c].getX() + 5 && mouseY > creatures[c].getY() && mouseY < creatures[c].getY() + 5) {
+              if(mousePressed == true) {
+                creatures[c].toggleStats();
+              }
+            } 
+            
+            if(creatures[c] != creatures[0]){
+              if(creatures[c - 1] == null) {
+                creatures[c - 1] = creatures[c];
+              }
+            }
+          } else {
+            println("Creature: " + creatures[c] + " is dood. Temperatuur te hoog of te laag.");
+            creatures[c] = null; 
+            num_creatures--;
           }
-        } 
-        
-        println("Creature: " + creatures[c]+ " max_temp:"+creatures[c].getMaxTemp()+" min_temp:"+creatures[c].getMinTemp());
-        
-        //if(creatures[c] != creatures[0]){
-        //  if(creatures[c - 1] == null) {
-        //    creatures[c - 1] = creatures[c];
-        //  }
-        //}
+        } else {
+          println("Creature: " + creatures[c] + " is dood. Geen energy.");
+          creatures[c] = null; 
+          num_creatures--;
+        }
       } else {
-        println("Creature: " + creatures[c] + " is dood. Temperatuur te hoog of te laag.");
+        println("Creature: " + creatures[c] + " is dood. Te oud.");
         creatures[c] = null; 
         num_creatures--;
       }
-      
-      
-      /* Na 100 dagen in leven
-      -- Stage 1 --
-      if energy > 200
-      kans om te zwemmen of kans op temp aanpassing aan de hand van average of betere/langere resitance
-      -- Stage 2 --
-      kans om temp te noticen
-      -- Stage 3 --
-      kans om te breeden
-      -- Stage 4 --
-      kans om aan te vallen
-      
-      ---- Stat increases -----
-      */
     }
+    
     if(randomPercent <= w.getFoodChance()) {
       foods[num_food] = new Food();
       println("Food: New Food!! energy: " + foods[num_food].getEnergy());

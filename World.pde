@@ -9,7 +9,7 @@ class World {
   World() {
     days = 1;
     life_chance = 0.01;
-    food_chance = 0.1;
+    food_chance = 0.03;
   }
 
   void incrementDay() {

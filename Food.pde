@@ -12,7 +12,7 @@ class Food {
     x = random(0, 1000);
     y = random(250, 1000);
     size = 3;
-    energy = random(0.2);
+    energy = random(2, 5);
     food_color = color(64, 255, 8);
     if(x < 500){
       direction = 1;

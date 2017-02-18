@@ -52,20 +52,22 @@ class Sun {
     if(x >= 0 && x < 1000) {
       float waterTemp = water.getWaterTemp();
       water.setWaterTemp(waterTemp + temp_increase);
-      
-      println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " rand: "+temp_increase+ " days: "+ w.getDays());
+
+      println("temp increase: " + temp_increase + " days: " + w.getDays());
     } else if(x >= 1000 && x < 2000) {
       float waterTemp = water.getWaterTemp();
       water.setWaterTemp(waterTemp + temp_decrease);
+      
       air.night();
-      println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " rand: "+temp_decrease+ " days: "+ w.getDays());
-    }else if(x >= 2000) {
-      println("water_temp: "+ water.getWaterTemp() + " x: "+x+ " days: "+ w.getDays());
+      
+      println("temp decrease: " + temp_decrease + " days: "+ w.getDays());
+    } else if(x >= 2000) {
       x = 0;
+      resetTempIncreaseAndDecrease();
       w.incrementDay();
       air.day();
       
-      resetTempIncreaseAndDecrease();
+      println("days: "+ w.getDays());
     }  
   }
 }
