@@ -1,4 +1,5 @@
 class Creature {
+  int type;
   float size;
   float speed;
   float weight;
@@ -14,9 +15,10 @@ class Creature {
   boolean displayStats = false;
   
   
-  Creature(int dayOfCreation) {
+  Creature(int dayOfCreation, int _type) {
     //x = xin;
     //y = yin;
+    type = _type;
     day_of_creation = dayOfCreation;
     x = random(0, 1000);
     y = random(250, 1000);
@@ -27,11 +29,12 @@ class Creature {
     life_span = int(random(25, 35));
     energy = random(30, 50);
     energy_drain = random(0.005);
+    size = 5;
   }
   
   void display() {
     fill(color(255, 3, 3));
-    ellipse(x, y, 5, 5);
+    ellipse(x, y, size, size);
     textSize(14);
     if(displayStats) {
       text("Creation day: "+ day_of_creation, x - 60, y + 20);
@@ -50,6 +53,12 @@ class Creature {
   
   void move() {
     
+  }
+  
+  void eat(float _energy) {
+    energy = energy + _energy;
+    output.println("Eaten! energy: " + energy);
+    output.println(" ");
   }
   
   float getMutationRate() {
@@ -106,5 +115,9 @@ class Creature {
   
   void loseEnergy() {
     energy = energy - energy_drain;
+  }
+  
+  float getSize() {
+    return size;
   }
 }
