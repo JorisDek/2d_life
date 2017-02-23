@@ -76,16 +76,15 @@ void draw() {
   
   for(int c = 0; c < num_creatures; c++){
     if(creatures[c] != null) {
-      if(creatures[c].getLifeSpan() + creatures[c].getDayOfCreation() > w.getDays()) {           // als de creature niet te oud is
-        if(creatures[c].getEnergy() != 0) {                                                      // als de creature nog energie heeft
-          if(creatures[c].getMinTemp() < water.getTemp(creatures[c].getY()) && creatures[c].getMaxTemp() > water.getTemp(creatures[c].getY())) {    //als de creature niet in te warm of te koud water is
+      if(creatures[c].getLifeSpan() + creatures[c].getDayOfCreation() > w.getDays()) {                                                               // als de creature niet te oud is
+        if(creatures[c].getEnergy() != 0) {                                                                                                          // als de creature nog energie heeft
+          if(creatures[c].getMinTemp() < water.getTemp(creatures[c].getY()) && creatures[c].getMaxTemp() > water.getTemp(creatures[c].getY())) {     // als de creature niet in te warm of te koud water is
             creatures[c].loseEnergy();
             creatures[c].display();
             
             for(int i = 0; i < num_food; i++) {  //
               if(foods[i] != null) {
                 float distance = dist(creatures[c].x, creatures[c].y, foods[i].x, foods[i].y);
-                
                 if(distance < creatures[c].getSize()){
                   creatures[c].eat(foods[i].getEnergy());
                   foods[i] = null;
@@ -93,7 +92,7 @@ void draw() {
                 }
               }
             }
-            /* Na 100 dagen in leven
+            /* 
             -- Stage 1 --
             if energy > 200
             kans om te zwemmen of kans op temp aanpassing aan de hand van average of betere/langere resitance
@@ -142,9 +141,21 @@ void draw() {
       } else {
         println("Creature: " + creatures[c] + " is dood. Te oud.");
         writeLog(creatures[c], "To old.");
+       
+        int creatureType = creatures[c].type;
+        float creatureX = creatures[c].x;
+        float creatureY = creatures[c].y;
+        float maxTemp = creatures[c].max_temp;
+        float minTemp = creatures[c].min_temp;
+        int lifeSpan = creatures[c].life_span;
+        float energyDrain = creatures[c].energy_drain;
+        int generation = creatures[c].generation + 1;
         
-        creatures[c] = null; 
-        num_creatures--;
+        //num_creatures--;
+        //Als creature dood gaat van ouderdom, spawnt hij een nieuwe creature met zelfde stats en generation + 1.
+        creatures[c] = new Creature(w.getDays(), creatureType, creatureX, creatureY, maxTemp, minTemp, lifeSpan, energyDrain, generation);
+        println("Creature: New creature!! max_temp: " + creatures[num_creatures].getMaxTemp() + " min_temp:"+creatures[num_creatures].getMinTemp());
+        
       }
     }
   }
@@ -154,7 +165,7 @@ void draw() {
       foods[f].be();
       foods[f].display();
 
-      if( mouseX > foods[f].getX() && mouseX < foods[f].getX() + 3 && mouseY > foods[f].getY() && mouseY < foods[f].getY() + 3) {
+      if( mouseX > foods[f].getX() && mouseX < foods[f].getX() + foods[f].size && mouseY > foods[f].getY() && mouseY < foods[f].getY() + foods[f].size) {
         if(mousePressed == true) {
           foods[f].toggleStats();
         }
@@ -204,8 +215,9 @@ void clearScreen() {
 }
 
 void writeLog(Creature creature, String cause) {
-  output.println("Day "+ w.getDays()+ "  X "+sun.getX());
-  output.println("Type: " + creature.type +" "+ cause);
+  output.println("Day "+ w.getDays()+ "  X "+sun.getX()  +" "+ cause);
+  output.println("Type: " + creature.type);
+  output.println("Generation: " + creature.generation);
   output.println("Day of creation: " + creature.day_of_creation);
   output.println("Day: " + w.days);
   output.println("Max temp: " + creature.max_temp );
