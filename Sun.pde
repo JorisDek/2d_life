@@ -58,14 +58,14 @@ class Sun {
       float waterTemp = water.getWaterTemp();
       water.setWaterTemp(waterTemp + temp_decrease);
       
-      air.night();
+      w.night();
       
       println("temp decrease: " + temp_decrease + " days: "+ w.getDays());
     } else if(x >= 2000) {
       x = 0;
       resetTempIncreaseAndDecrease();
       w.incrementDay();
-      air.day();
+      w.day();
       
       println("days: "+ w.getDays());
     }  

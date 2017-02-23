@@ -11,7 +11,12 @@ class World {
     life_chance = 0.01;
     food_chance = 0.03;
   }
-
+  void day() {
+    air.day();
+  }
+  void night() {
+    air.night();
+  }
   void incrementDay() {
     days++;
   }

@@ -92,6 +92,12 @@ void draw() {
                 }
               }
             }
+            
+            if(creatures[c].generation == 3) { // als het de derde generatie is
+              if(randomPercent > (100 - creatures[c].mutation_rate)) {      // als de het random getal tussen 99.98 en 100 is
+                creatures[c].evolve();
+              }
+            }
             /* 
             -- Stage 1 --
             if energy > 200
@@ -150,11 +156,11 @@ void draw() {
         int lifeSpan = creatures[c].life_span;
         float energyDrain = creatures[c].energy_drain;
         int generation = creatures[c].generation + 1;
-        
+        //println(w.getDays(), creatureType, creatureX, creatureY, maxTemp, minTemp, lifeSpan, energyDrain, generation);
         //num_creatures--;
         //Als creature dood gaat van ouderdom, spawnt hij een nieuwe creature met zelfde stats en generation + 1.
         creatures[c] = new Creature(w.getDays(), creatureType, creatureX, creatureY, maxTemp, minTemp, lifeSpan, energyDrain, generation);
-        println("Creature: New creature!! max_temp: " + creatures[num_creatures].getMaxTemp() + " min_temp:"+creatures[num_creatures].getMinTemp());
+        println("Creature: New creature!! max_temp: " + creatures[c].getMaxTemp() + " min_temp:"+creatures[c].getMinTemp());
         
       }
     }
@@ -219,7 +225,6 @@ void writeLog(Creature creature, String cause) {
   output.println("Type: " + creature.type);
   output.println("Generation: " + creature.generation);
   output.println("Day of creation: " + creature.day_of_creation);
-  output.println("Day: " + w.days);
   output.println("Max temp: " + creature.max_temp );
   output.println("Min temp: " + creature.min_temp );
   output.println("Life span: " + creature.life_span );
@@ -228,10 +233,3 @@ void writeLog(Creature creature, String cause) {
   output.println(" ");
   output.flush(); // Writes the remaining data to the file
 }
-
-//void mousePressed() {
-//  //numcells = 0;
-//  //reset();
-  
-//  if(mouseX > creatures[])
-//}
