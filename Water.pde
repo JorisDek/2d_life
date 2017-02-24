@@ -6,7 +6,7 @@ class Water {
   color water_color;
   float upper_layer_temp;
   float bottom_layer_temp;
-  
+
   Water() {
     upper_layer_height = 250;
     bottom_layer_height = 500;
@@ -16,7 +16,7 @@ class Water {
     upper_layer_temp = 0;
     bottom_layer_temp = 1;
   }
-  
+
   void display() {
     Air air = new Air();
     fill(water_color);
@@ -25,27 +25,7 @@ class Water {
     fill(23,0,180);
     rect(0, 500, 1000, bottom_layer_height);
   }
-  
-  void setWaterTemp(float _temp) {
-    upper_layer_temp = _temp;
-  }
-  
-  float getWaterTemp() {
-    return upper_layer_temp;
-  }
-  
-  int getUpperLayerTop() {
-    return upper_layer_top;
-  }
-  
-  int getUpperLayerBottom() {
-  return bottom_layer_top;
-  }
-  
-  float getBottomWaterTemp () {
-    return bottom_layer_temp;
-  }
-  
+
   float getTemp(float position_y) {
     if(position_y > 250 && position_y < 500) {
       return upper_layer_temp;
@@ -54,6 +34,26 @@ class Water {
       return bottom_layer_temp;
     } else {
       return 0;
-    } 
+    }
+  }
+
+  void setWaterTemp(float _temp) {
+    upper_layer_temp = _temp;
+  }
+
+  float getWaterTemp() {
+    return upper_layer_temp;
+  }
+
+  int getUpperLayerTop() {
+    return upper_layer_top;
+  }
+
+  int getUpperLayerBottom() {
+  return bottom_layer_top;
+  }
+
+  float getBottomWaterTemp () {
+    return bottom_layer_temp;
   }
 }

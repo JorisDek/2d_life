@@ -17,8 +17,8 @@ class Creature {
   int evolve_stage = 0;
   int eaten_food = 0;
   int display_direction;
-  
-  
+
+
   Creature(int dayOfCreation, int _type) {
     type = _type;
     day_of_creation = dayOfCreation;
@@ -26,12 +26,12 @@ class Creature {
     y = random(250, 1000);
     max_temp = random(-200, 200);
     min_temp = random(-200, max_temp - random(50));
-    life_span = int(random(30, 50));
+    life_span = int(random(25, 35));
     energy = random(30, 50);
     energy_drain = random(0.005);
     generation = 1;
   }
-  
+
   Creature(int dayOfCreation, int _type, float _x, float _y, float _maxtemp, float _mintemp, int _lifespan, float _energydrain, int _gen) {
     type = _type;
     day_of_creation = dayOfCreation;
@@ -45,7 +45,7 @@ class Creature {
     energy_drain = _energydrain;
     generation = _gen;
   }
-  
+
   void display() {
     fill(color(255, 3, 3));
     ellipse(x, y, size, size);
@@ -67,28 +67,32 @@ class Creature {
     }
   }
 
+  void loseEnergy() {
+    energy = energy - energy_drain;
+  }
+
   // Perform action based on surroundings
   void run() {
 
   }
-  
+
   void move() {
-    
+
   }
-  
+
   void eat(float _energy) {
     energy = energy + _energy;
     eaten_food++;
     output.println("Eaten! energy: " + energy);
     output.println(" ");
   }
-  
+
   void evolve() {
     evolve_stage++;
-    
+
     switch(evolve_stage) {
-      case 1: 
-        int random = int(random(3)); 
+      case 1:
+        int random = int(random(3));
         if(random == 1) {
           //better life_span
         } else if(random == 2) {
@@ -98,44 +102,44 @@ class Creature {
         }
         println("Creature: evolved to stage 1");
         break;
-      case 2: 
+      case 2:
         random = int(random(3));
          println("Creature: evolved to stage 2");
         break;
-      default: 
+      default:
         println("Invalid stage.");
         break;
     }
   }
-  
+
   float getMutationRate() {
     return mutation_rate;
   }
-  
+
   float getX() {
     return x;
   }
-  
+
   float getY() {
     return y;
   }
-  
+
   float getMinTemp() {
     return min_temp;
   }
-  
+
   float getMaxTemp() {
     return max_temp;
   }
-  
+
   int getDayOfCreation() {
     return day_of_creation;
   }
-  
+
   void incrementDayOfCreation() {
     day_of_creation++;
   }
-  
+
   void toggleStats() {
     if(displayStats) {
       displayStats = false;
@@ -143,32 +147,28 @@ class Creature {
       displayStats = true;
     }
   }
-  
+
   int getLifeSpan() {
     return life_span;
   }
-  
+
   void setLifeSpan(int _lifespan) {
     life_span = _lifespan;
   }
-  
+
   float getEnergy() {
     return energy;
   }
-  
+
   void setEnergy(float _energy) {
     energy = _energy;
   }
-  
-  void loseEnergy() {
-    energy = energy - energy_drain;
-  }
-  
+
   float getSize() {
     return size;
   }
-  
+
   int getType() {
-    return type;  
+    return type;
   }
 }
