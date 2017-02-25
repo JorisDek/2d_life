@@ -28,7 +28,7 @@ class Creature {
     min_temp = random(-200, max_temp - random(50));
     life_span = int(random(25, 35));
     energy = random(30, 50);
-    energy_drain = random(0.005);
+    energy_drain = random(0.0001, 0.005);
     generation = 1;
   }
 

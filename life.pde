@@ -1,3 +1,5 @@
+// import java.util.Iterator;
+
 World w;
 
 int max_creatures = 1000;
@@ -6,8 +8,13 @@ int max_food = 2000;
 Air air = new Air();
 Water water = new Water();
 Sun sun  = new Sun();
-Creature[] creatures = new Creature[max_creatures];
-Food[] foods = new Food[max_food];
+
+//Creature[] creatures = new Creature[max_creatures];
+//Food[] foods = new Food[max_food];
+ArrayList<Creature> creatures = new ArrayList<Creature>();
+// Iterator<Creature> creature_iter = creatures.iterator();
+ArrayList<Food> foods = new ArrayList<Food>();
+// Iterator<Food> food_iter = foods.iterator();
 
 int num_creatures = 0;
 int created_creatures = 0;
@@ -79,139 +86,126 @@ void draw() {
 
 
   // CREATURE LOOP
-  for(int c = 0; c < num_creatures; c++){
-    if(creatures[c] != null) {
-      if(creatures[c].getLifeSpan() + creatures[c].getDayOfCreation() > w.getDays()) {                                                               // als de creature niet te oud is
-        if(creatures[c].getEnergy() > 0) {                                                                                                          // als de creature nog energie heeft
-          if(creatures[c].getMinTemp() < water.getTemp(creatures[c].getY()) && creatures[c].getMaxTemp() > water.getTemp(creatures[c].getY())) {     // als de creature niet in te warm of te koud water is
-            creatures[c].loseEnergy();
-            creatures[c].display();
+  for(int c = 0; c < creatures.size(); c++) {
+    // println(creature_iter.next());
+    // Creature creature = creature_iter.next();
+    Creature creature = creatures.get(c);
+    if(creature != null) {
+     if(creature.getLifeSpan() + creature.getDayOfCreation() > w.getDays()) {                                                               // als de creature niet te oud is
+       if(creature.getEnergy() > 0) {                                                                                                          // als de creature nog energie heeft
+         if(creature.getMinTemp() < water.getTemp(creature.getY()) && creature.getMaxTemp() > water.getTemp(creature.getY())) {     // als de creature niet in te warm of te koud water is
+           creature.loseEnergy();
+           creature.display();
 
-            for(int i = 0; i < num_food; i++) {  //
-              if(foods[i] != null) {
-                float distance = dist(creatures[c].x, creatures[c].y, foods[i].x, foods[i].y);
-                if(distance < creatures[c].getSize()){
-                  creatures[c].eat(foods[i].getEnergy());
-                  foods[i] = null;
-                  num_food--;
-                }
-              }
-            }
+           for(int i = foods.size() - 1; i >= 0; i--){  //
+             Food food = foods.get(i);
+             if(food != null) {
+               float distance = dist(creature.x, creature.y, food.x, food.y);
+               if(distance < creature.getSize()){
+                 creature.eat(food.getEnergy());
+                 foods.remove(i);
+                 num_food--;
+               }
+             }
+           }
 
-            if(creatures[c].generation == 3) { // als het de derde generatie is
-              if(randomPercent > (100 - creatures[c].mutation_rate)) {      // als de het random getal tussen 99.98 en 100 is
-                creatures[c].evolve();
-              }
-            }
-            /*
-            -- Stage 1 --
-            if energy > 200
-            kans om te zwemmen of kans op temp aanpassing aan de hand van average of betere/langere resitance
-            -- Stage 2 --
-            kans om temp te noticen
-            -- Stage 3 --
-            kans om te breeden
-            -- Stage 4 --
-            kans om aan te vallen
+           if(creature.generation == 3) { // als het de derde generatie is
+             if(randomPercent > (100 - creature.mutation_rate)) {      // als de het random getal tussen 99.98 en 100 is
+               creature.evolve();
+             }
+           }
+           /*
+           -- Stage 1 --
+           if energy > 200
+           kans om te zwemmen of kans op temp aanpassing aan de hand van average of betere/langere resitance
+           -- Stage 2 --
+           kans om temp te noticen
+           -- Stage 3 --
+           kans om te breeden
+           -- Stage 4 --
+           kans om aan te vallen
 
-            ---- Stat increases -----
-            */
+           ---- Stat increases -----
+           */
 
-            if( mouseX > creatures[c].getX() && mouseX < creatures[c].getX() + 5 && mouseY > creatures[c].getY() && mouseY < creatures[c].getY() + 5) {
-              if(mousePressed == true) {
-                creatures[c].toggleStats();
-              }
-            }
+           if( mouseX > creature.getX() && mouseX < creature.getX() + 5 && mouseY > creature.getY() && mouseY < creature.getY() + 5) {
+             if(mousePressed == true) {
+               creature.toggleStats();
+             }
+           }
 
-            if(creatures[c] != creatures[0]){
-              if(creatures[c-1] == null) {
-                creatures[c-1] = creatures[c];
-                creatures[c] = null;
-              }
-            }
-            if(creatures[c] != null) {
-              if(creatures[c].getEnergy() < 0){
-                creatures[c] = null;
-                num_creatures--;
-              }
-            }
-          } else {
-            println("Creature: " + creatures[c] + " is dood. Temperatuur te hoog of te laag.");
-            writeLog(creatures[c], "Temperatuur too high or too low.");
+           if(creature.getEnergy() < 0){
+             creatures.remove(c);
+             num_creatures--;
+           }
 
-            creatures[c] = null;
-            num_creatures--;
-          }
-        } else {
-          println("Creature: " + creatures[c] + " is dood. Geen energy.");
-          writeLog(creatures[c], "No energy.");
+         } else {
+           println("Creature: " + creature + " is dood. Temperatuur te hoog of te laag.");
+           writeLog(creature, "Temperatuur too high or too low.");
 
-          creatures[c] = null;
-          num_creatures--;
-        }
-      } else {
-        println("Creature: " + creatures[c] + " is dood. Te oud.");
-        writeLog(creatures[c], "To old.");
+           creatures.remove(c);
+           num_creatures--;
+         }
+       } else {
+         println("Creature: " + creature + " is dood. Geen energy.");
+         writeLog(creature, "No energy.");
 
-        int creatureType = creatures[c].type;
-        float creatureX = creatures[c].x;
-        float creatureY = creatures[c].y;
-        float maxTemp = creatures[c].max_temp;
-        float minTemp = creatures[c].min_temp;
-        int lifeSpan = creatures[c].life_span;
-        float energyDrain = creatures[c].energy_drain;
-        int generation = creatures[c].generation + 1;
-        //println(w.getDays(), creatureType, creatureX, creatureY, maxTemp, minTemp, lifeSpan, energyDrain, generation);
-        //num_creatures--;
-        //Als creature dood gaat van ouderdom, spawnt hij een nieuwe creature met zelfde stats en generation + 1.
-        creatures[c] = new Creature(w.getDays(), creatureType, creatureX, creatureY, maxTemp, minTemp, lifeSpan, energyDrain, generation);
-        println("Creature: New creature!! max_temp: " + creatures[c].getMaxTemp() + " min_temp:"+creatures[c].getMinTemp());
+         creatures.remove(c);
+         num_creatures--;
+       }
+     } else {
+       println("Creature: " + creature + " is dood. Te oud.");
+       writeLog(creature, "To old.");
+       creatures.remove(c);
 
-      }
+       int creatureType = creature.type;
+       float creatureX = creature.x;
+       float creatureY = creature.y;
+       float maxTemp = creature.max_temp;
+       float minTemp = creature.min_temp;
+       int lifeSpan = creature.life_span;
+       float energyDrain = creature.energy_drain;
+       int generation = creature.generation + 1;
+       //println(w.getDays(), creatureType, creatureX, creatureY, maxTemp, minTemp, lifeSpan, energyDrain, generation);
+       //num_creatures--;
+       //Als creature dood gaat van ouderdom, spawnt hij een nieuwe creature met zelfde stats en generation + 1.
+       creatures.add(new Creature(w.getDays(), creatureType, creatureX, creatureY, maxTemp, minTemp, lifeSpan, energyDrain, generation));
+       //println("Creature: New creature!! max_temp: " + creature.getMaxTemp() + " min_temp:"+creature.getMinTemp());
+
+     }
     }
   }
 
   // FOOD LOOP
-  for(int f = 0; f < num_food; f++){
-    if(foods[f] != null) {
-      foods[f].be();
-      foods[f].display();
+  for(int f = 0; f < foods.size(); f++){
+    Food food = foods.get(f);
+    if(food != null) {
+      food.be();
+      food.display();
 
-      if( mouseX > foods[f].getX() && mouseX < foods[f].getX() + foods[f].size && mouseY > foods[f].getY() && mouseY < foods[f].getY() + foods[f].size) {
+      if( mouseX > food.getX() && mouseX < food.getX() + food.size && mouseY > food.getY() && mouseY < food.getY() + food.size) {
         if(mousePressed == true) {
-          foods[f].toggleStats();
+          food.toggleStats();
         }
       }
 
-      if(foods[f].getEnergy() < 0){
-        foods[f] = null;
+      if(food.getEnergy() < 0){
+        foods.remove(f);
         num_food--;
-      }
-    } else {
-      if(foods[f+1] != null) {
-        foods[f] = foods[f+1];
-        foods[f+1] = null;
-
-        foods[f].be();
-        foods[f].display();
-        if(foods[f].getEnergy() < 0){
-          foods[f] = null;
-          num_food--;
-        }
       }
     }
   }
 
   if(randomPercent <= w.getFoodChance()) {
-    foods[num_food] = new Food();
-    println("Food: New Food!! energy: " + foods[num_food].getEnergy());
+    foods.add(new Food());
+    println("Food: New Food!! energy: " + foods.get(num_food).getEnergy());
     num_food++;
     created_food++;
   }
   if(randomPercent <= w.getLifeChance()) {
     created_creatures++;
-    creatures[num_creatures] = new Creature(w.getDays(), created_creatures);
-    println("Creature: New creature!! max_temp: " + creatures[num_creatures].getMaxTemp() + " min_temp:"+creatures[num_creatures].getMinTemp());
+    creatures.add(new Creature(w.getDays(), created_creatures));
+    println("Creature: New creature!! max_temp: " + creatures.get(num_creatures).getMaxTemp() + " min_temp:"+creatures.get(num_creatures).getMinTemp());
     num_creatures++;
   }
 }
