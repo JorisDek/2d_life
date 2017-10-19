@@ -12,7 +12,7 @@ class Food {
     x = random(0, 1000);
     y = random(250, 1000);
     size = 3;
-    energy = random(2, 5);
+    energy = random(5, 10);
     food_color = color(64, 255, 8);
     if(x < 500){
       direction = 1;
@@ -20,7 +20,7 @@ class Food {
       direction = -1;
     }
     speed_x = 0.1;
-    energy_loss = random(0.0001);
+    energy_loss = random(0.00015);
   }
   
   void be() {

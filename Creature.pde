@@ -1,7 +1,7 @@
 class Creature {
   int type;
   float size = 5;
-  float mutation_rate = 0.01;
+  float mutation_rate = 0.0;
   float speed;
   float weight;
   float x;
@@ -14,7 +14,7 @@ class Creature {
   int life_span;
   boolean displayStats = false;
   int generation;
-  int evolve_stage = 0;
+  int mutation_stage = 0;
   int eaten_food = 0;
   int display_direction;
 
@@ -81,39 +81,70 @@ class Creature {
   }
 
   void eat(float _energy) {
-    energy = energy + _energy;
     eaten_food++;
-    output.println("Eaten! energy: " + energy);
+    energy = energy + _energy;
+    output.println("Creature: " + this.type);
+    output.println("Eaten! energy: " + _energy);
     output.println(" ");
   }
 
-  void evolve() {
-    evolve_stage++;
-
-    switch(evolve_stage) {
-      case 1:
-        int random = int(random(3));
-        if(random == 1) {
-          //better life_span
-        } else if(random == 2) {
-          //better temp_range
-        } else if(random == 3) {
-          //better energydrain
-        }
-        println("Creature: evolved to stage 1");
-        break;
-      case 2:
-        random = int(random(3));
-         println("Creature: evolved to stage 2");
-        break;
-      default:
-        println("Invalid stage.");
-        break;
-    }
+  void mutate() {
+    mutation_stage++;
+    int random = int(random(3));
+      if(random == 1) {
+        //better life_span
+        life_span = life_span + int(random(1, 5));
+      } else if(random == 2) {
+        //better temp_range
+        max_temp = max_temp + random(0, 25);
+        min_temp = min_temp - random(0, 25);
+      } else if(random == 3) {
+        //better energydrain
+        energy_drain = energy_drain - random(0, 0.00005);
+      }
+      println("Creature: mutated to stage "+ mutation_stage +". Random "+ random);
+    
+    //switch(mutation_stage) {
+    //  case 1:
+    //    int random = int(random(3));
+    //    if(random == 1) {
+    //      //better life_span
+    //      life_span = life_span + int(random(1, 5));
+    //    } else if(random == 2) {
+    //      //better temp_range
+    //      max_temp = max_temp + random(0, 25);
+    //      min_temp = min_temp - random(0, 25);
+    //    } else if(random == 3) {
+    //      //better energydrain
+    //      energy_drain = energy_drain - random(0, 0.00005);
+    //    }
+    //    println("Creature: mutated to stage "+ mutation_stage +". Random "+ random);
+    //    break;
+    //  case 2:
+    //    random = int(random(3));
+    //    println("Creature: mutated to stage 2");
+    //    break;
+    //  default:
+    //    println("Invalid stage.");
+    //    break;
+    //}
   }
 
   float getMutationRate() {
-    return mutation_rate;
+    switch(mutation_stage) {
+      case 0:
+        mutation_rate = 0.001;
+        return mutation_rate;
+      case 1:
+        mutation_rate = 0.0005;
+        return mutation_rate;
+      case 2:
+        mutation_rate = 0.0001;
+        return mutation_rate;
+      default:
+        mutation_rate = 0;
+        return mutation_rate;
+    }
   }
 
   float getX() {
@@ -171,4 +202,5 @@ class Creature {
   int getType() {
     return type;
   }
+  
 }
